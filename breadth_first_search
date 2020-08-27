@@ -1,0 +1,57 @@
+#include <iostream>
+#include<map>
+#include<list>
+#include<queue>
+using namespace std;
+map<char,list<char>>graph;
+void addedge(map<char,list<char>>&graph,char u,char v,map<char,bool>&visited){
+graph[u].push_back(v);
+//graph[v].push_back(u);
+visited[u]=false;
+visited[v]=false;
+
+
+}
+void bfs(char src,map<char,bool>&visited){
+queue<char>q;
+q.push(src);
+visited[src]=true;
+list<char>::iterator i;
+while(!q.empty()){
+char src=q.front();
+cout<<src<<" ";
+q.pop();
+
+for(i=graph[src].begin();i!=graph[src].end();i++){
+if(!visited[*i]){
+      visited[*i]=true;
+        q.push(*i);
+        }
+}
+}
+}
+
+int main() {
+    
+    map<char,bool>visited;
+    addedge(graph,'a','c',visited);
+    addedge(graph,'a','b',visited);
+    addedge(graph,'c','d',visited);
+    addedge(graph,'d','b',visited);
+    addedge(graph,'b','e',visited);
+    addedge(graph,'d','e',visited);
+    map<char,list<char>>::iterator i;
+    list<char>::iterator j;
+    for(i=graph.begin();i!=graph.end();i++){
+          cout<<i->first;
+            for(j=i->second.begin();j!=i->second.end();j++){
+                    cout<<"->"<<*j;
+            }
+    cout<<endl;
+    }
+char src='a';
+bfs(src,visited);
+
+
+
+}
