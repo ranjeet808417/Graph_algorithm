@@ -1,0 +1,32 @@
+#include <iostream>
+#include<map>
+#include<list>
+using namespace std;
+void addedge(map<char,list<char>>&graph,char u,char v){
+graph[u].push_back(v);
+//graph[v].push_back(u);
+}
+
+
+int main() {
+    map<char,list<char>>graph;
+    addedge(graph,'a','c');
+    addedge(graph,'a','b');
+    addedge(graph,'c','d');
+    addedge(graph,'d','b');
+    addedge(graph,'b','e');
+    addedge(graph,'d','e');
+    map<char,list<char>>::iterator i;
+    list<char>::iterator j;
+    for(i=graph.begin();i!=graph.end();i++){
+          cout<<i->first;
+            for(j=i->second.begin();j!=i->second.end();j++){
+                    cout<<"->"<<*j;
+            }
+    cout<<endl;
+    }
+
+
+
+
+}
