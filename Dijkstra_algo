@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char,list<pair<char,int>>>graph;
+
+void addedge(char u,char v,int dist,map<char,int>&vdist){
+graph[u].push_back({v,dist});
+graph[v].push_back({u,dist});
+vdist[u]=INT_MAX;
+vdist[v]=INT_MAX;
+}
+void Dijkstra(char src,map<char,int>&vdist){
+list<pair<char,int>>::iterator j;
+set<pair<int,char>>s;
+//set<pair<int,char>>::iterator k;
+vdist[src]=0;
+s.insert({vdist[src],src});
+while(!s.empty() ){
+     int dist=s.begin()->first;
+     char par=s.begin()->second;
+     s.erase(s.begin());
+for(j=graph[par].begin();j!=graph[par].end();j++){
+  
+if(dist+j->second<vdist[j->first]){
+       set<pair<int,char>>::iterator i= s.find({vdist[j->first],j->first});
+        if(i!=s.end()){
+                s.erase(i);
+        }
+vdist[j->first]=dist+j->second;
+s.insert({vdist[j->first],j->first});
+}
+}
+
+}
+
+}
+int main() {
+   map<char,int>vdist;
+   addedge('a','b',4,vdist);
+   addedge('a','h',8,vdist);
+   addedge('b','c',8,vdist);
+   addedge('b','h',11,vdist);
+   addedge('c','d',7,vdist);
+   addedge('c','f',4,vdist);
+   addedge('c','i',2,vdist);
+   addedge('d','e',9 ,vdist);
+   addedge('d','f',14,vdist);
+   addedge('e','f',10,vdist);
+   addedge('f','g',2,vdist);
+   addedge('i','h',7,vdist);
+   addedge('i','g',6,vdist);
+   addedge('h','g',1,vdist);
+             
+    map<char,list<pair<char,int>>>::iterator k;
+   list<pair<char,int>>::iterator m;
+   cout<<"adjacency_list -"<<endl;
+   for(k=graph.begin();k!=graph.end();k++){
+          cout<<k->first;
+            for(m=k->second.begin();m!=k->second.end();m++){
+                    cout<<"->"<<"("<<m->first<<","<<m->second<<")";
+            }
+    cout<<endl;
+    }
+
+
+Dijkstra('a',vdist);
+cout<<"dijkstra algo "<<" ";
+map<char,int>::iterator i;
+for(i=vdist.begin();i!=vdist.end();i++){
+        cout<<i->first<<" "<<i->second<<endl;
+}
+}
