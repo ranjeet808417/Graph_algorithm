@@ -1,0 +1,54 @@
+#include <iostream>
+#include<map>
+#include<list>
+#include<stack>
+using namespace std;
+map<char,list<char>>graph;
+
+void addedge(char u,char v,map<char,bool>&visited){
+graph[u].push_back(v);
+//graph[v].push_back(u);
+visited[u]=false;
+visited[v]=false;
+}
+void topological_sort(char src,stack<char>&st,map<char,bool>&visited){
+list<char>::iterator j;
+for(j=graph[src].begin();j!=graph[src].end();j++){
+        if(!visited[*j]){
+            visited[*j]=true;
+            topological_sort(*j,st,visited);    
+        }
+}
+st.push(src);
+
+}
+
+int main() {
+    map<char,bool>visited;
+    stack<char>st;
+    addedge('a','c',visited);
+    addedge('a','b',visited);
+    addedge('c','d',visited);
+    addedge('d','b',visited);
+    addedge('b','e',visited);
+    addedge('d','e',visited);
+    map<char,list<char>>::iterator k;
+   list<char>::iterator m;
+   cout<<"adjacency_list -"<<endl;
+   for(k=graph.begin();k!=graph.end();k++){
+          cout<<k->first;
+            for(m=k->second.begin();m!=k->second.end();m++){
+                    cout<<"->"<<*m;
+            }
+    cout<<endl;
+    }
+
+char src='a';
+visited[src]=true;
+topological_sort(src,st,visited);
+cout<<"topological sort -"<<" ";
+while(!st.empty()){
+        cout<<st.top()<<" ";
+        st.pop();
+}
+}
