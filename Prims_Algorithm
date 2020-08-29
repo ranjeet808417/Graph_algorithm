@@ -1,0 +1,65 @@
+#include<bits/stdc++.h>
+using namespace std;
+map<char,list<pair<char,int>>>graph;
+map<char,char>par;
+map<char,int>vdist;
+map<char,bool>visited;
+void addedge(char u,char v,int dist){
+        graph[u].push_back(make_pair(v,dist));
+      graph[v].push_back(make_pair(u,dist));
+visited[u]=false;
+visited[v]=false;
+vdist[u]=INT_MAX;
+vdist[v]=INT_MAX;
+}
+
+
+void prims_algo(char src){
+set<pair<int,char>>st;
+visited[src]=true;
+vdist[src]=0;
+//par[src]='';
+st.insert({0,src});
+while(!st.empty()){
+char src=st.begin()->second;
+st.erase(st.begin());
+visited[src]=true;
+//cout<<src<<par[src]<<" ";
+list<pair<char,int>>::iterator i;
+for(i=graph[src].begin();i!=graph[src].end();i++){
+if(!visited[i->first] && i->second < vdist[i->first]){
+vdist[i->first]=i->second;
+st.insert({i->second,i->first});
+par[i->first]=src;
+
+}
+
+}
+
+}
+}
+
+int main(){
+
+
+addedge('a','b',4);
+   addedge('a','h',8);
+   addedge('b','c',8);
+   addedge('b','h',11);
+   addedge('c','d',7);
+   addedge('c','f',4);
+   addedge('c','i',2);
+   addedge('d','e',9 );
+   addedge('d','f',14);
+   addedge('e','f',10);
+   addedge('f','g',2);
+   addedge('i','h',7);
+   addedge('i','g',6);
+   addedge('h','g',1);
+             
+prims_algo('a');
+map<char,char>::iterator i;
+for(i=par.begin();i!=par.end();i++){
+        cout<<i->second<<i->first<<" ";
+}
+}
