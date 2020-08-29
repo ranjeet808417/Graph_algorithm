@@ -1,0 +1,50 @@
+#include <iostream>
+#include<map>
+#include<list>
+#include<climits>
+using namespace std;
+map<string,int>graph;
+map<char,int>vdist;
+void addedge(string edge,int dist){
+graph.insert({edge,dist});
+vdist[edge[0]]=INT_MAX;
+vdist[edge[1]]=INT_MAX;
+}
+
+void bellman_ford(char src){
+map<char,int>::iterator i;
+
+vdist[src]=0;
+for(i=vdist.begin();i!=vdist.end();i++){
+map<string,int>::iterator j;
+for(j=graph.begin();j!=graph.end();j++){
+char s=j->first[0];
+char d=j->first[1];
+if(vdist[s]+j->second < vdist[d]){
+        vdist[d]=vdist[s]+j->second;
+}
+
+}
+
+}
+
+
+}
+
+int main() {
+
+addedge("AB",-1);
+addedge("AC",4);
+addedge("BD",2);
+addedge("DB",1);
+addedge("BC",3);
+addedge("BE",2);
+addedge("ED",-3);
+addedge("DC",5);
+bellman_ford('A');
+map<char,int>::iterator i;
+for(i=vdist.begin();i!=vdist.end();i++){
+        cout<<i->first<<" "<<i->second<<endl;
+}
+
+}
