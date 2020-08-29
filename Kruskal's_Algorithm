@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+list<pair<string,int>>edge;
+map<char,char>subset;
+void addedge(string s,int wt){
+        edge.push_back(make_pair(s,wt));
+subset[s[0]]=s[0];
+subset[s[1]]=s[1];
+}
+char find_union(char src){
+if(subset[src]==src){
+        return src;
+}
+
+return subset[src]=find_union(subset[src]);
+
+}
+
+
+
+bool comparator(const pair<string,int> a,const pair<string,int> b){
+        return a.second < b.second;
+}
+
+
+
+
+int main(){
+
+
+addedge("ab",4);
+addedge("ah",8);
+ addedge("bc",8);
+ addedge("bh",11);
+addedge("cd",7);
+addedge("cf",4);
+ addedge("ci",2);
+ addedge("de",9 );
+addedge("df",14);
+addedge("ef",10);
+ addedge("fg",2);
+addedge("ih",7);
+addedge("ig",6);
+ addedge("hg",1);
+
+edge.sort(comparator);
+list<pair<string,int>>::iterator i;
+for(i=edge.begin();i!=edge.end();i++){
+            char x=find_union(i->first[0]);
+        char y=find_union(i->first[1]);
+        if(x!=y){
+              subset[x]=y;
+       cout<<i->first<<" "<<i->second<<endl;         
+        }
+}
+
+}
