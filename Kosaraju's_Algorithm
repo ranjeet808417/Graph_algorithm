@@ -1,0 +1,90 @@
+#include <bits/stdc++.h>
+using namespace std;
+map<char,list<char>>graph;
+map<char,list<char>>rgraph;
+map<char,bool>visited;
+map<char,bool>visited2;
+stack<char>s;
+set<char>vertex;
+void addedge(char u,char v){
+        graph[u].push_back(v);
+vertex.insert(u);
+vertex.insert(v);
+visited[u]=false;
+visited[v]=false;
+visited2[u]=false;
+visited2[v]=false;
+}
+
+void reversegraph(){
+map<char,list<char>>::iterator i;
+for(i=graph.begin();i!=graph.end();i++){
+  list<char>::iterator j;
+        for(j=i->second.begin();j!=i->second.end();j++){
+                rgraph[*j].push_back(i->first);
+        }
+}
+}
+
+void dfs(char src){
+list<char>::iterator i;
+for(i=graph[src].begin();i!=graph[src].end();i++){
+        if(!visited[*i]){
+                visited[*i]=true;
+                dfs(*i);
+        }
+
+}
+
+s.push(src);
+}
+
+void kosaraju_algorithm(char src){
+list<char>::iterator i;
+cout<<src;
+for(i=rgraph[src].begin();i!=rgraph[src].end();i++){
+        if(!visited2[*i]){
+                visited2[*i]=true;
+             // cout<<*i;
+                kosaraju_algorithm(*i);
+        }
+}
+
+
+}
+
+int main() {
+addedge('A','B');
+addedge('B','C');
+addedge('C','A');
+addedge('B','D');
+addedge('D','E');
+addedge('E','F');
+addedge('F','D');
+addedge('G','F');
+addedge('G','H');
+addedge('H','I');
+addedge('I','J');
+addedge('J','G');
+addedge('J','K');
+
+
+set<char>::iterator i;
+for(i=vertex.begin();i!=vertex.end();i++){
+        if(!visited[*i]){
+      visited[*i]=true;
+        dfs(*i);
+}
+}
+reversegraph();
+while(!s.empty()){
+if(!visited2[s.top()]){
+visited2[s.top()]=true;
+
+kosaraju_algorithm(s.top());
+cout<<endl;
+}
+
+s.pop();
+}
+}
