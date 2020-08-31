@@ -1,0 +1,82 @@
+#include <iostream>
+#include<map>
+#include<list>
+#include<set>
+using namespace std;
+map<char,list<char>>graph;
+map<char,int>intime;
+map<char,int>lowtime;
+map<char,bool>visited;
+set<char>s;
+int timer=1;
+int subtree=0;
+void addedge(char u,char v){
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+}
+void articulation_point(char src,char par=' '){
+intime[src]=timer;
+lowtime[src]=timer++;
+//timer=timer+1;
+visited[src]=true;
+ 
+list<char>::iterator child;
+for(child=graph[src].begin();child!=graph[src].end();child++){
+if(*child==par){
+        continue;
+}
+if(visited[*child]){
+        lowtime[src]=min(lowtime[src],intime[*child]);
+}
+else{
+articulation_point(*child,src);
+lowtime[src]=min(lowtime[src],lowtime[*child]);
+if(lowtime[*child]>=intime[src] && par!=' '){
+if(graph[src].size()>1){
+        //cout<<src<<"- is a articulation point"<<endl;
+       s.insert(src);
+}
+subtree++;
+}
+ 
+}
+
+}
+if(subtree >1 && par==' '){
+       // cout<<src<<"-is articulation point"<<endl;
+s.insert(src);
+}
+
+}
+int main(){
+   /*addedge('A','B');
+   addedge('A','C');
+   addedge('C','B');
+   addedge('D','B');
+   addedge('D','E');
+   addedge('D','F'); */
+   addedge('A','B');
+   addedge('A','G');
+   addedge('B','F');
+   addedge('F','G');
+   addedge('B','C');
+   addedge('B','D');
+   addedge('C','D');
+   addedge('C','E');
+   addedge('E','D');
+   addedge('F','H');
+   addedge('H','I');
+   addedge('I','J');
+   
+map<char,list<char>>::iterator i;
+for(i=graph.begin();i!=graph.end();i++){
+        intime[i->first]=0;
+        lowtime[i->first]=0;
+        visited[i->first]=false;
+}
+articulation_point('F');
+set<char>::iterator j;
+for(j=s.begin();j!=s.end();j++){
+        cout<<*j<<endl;
+}
+}
