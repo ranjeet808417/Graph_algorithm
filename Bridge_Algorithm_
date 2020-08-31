@@ -1,0 +1,58 @@
+#include <iostream>
+#include<map>
+#include<list>
+using namespace std;
+map<char,list<char>>graph;
+map<char,int>intime;
+map<char,int>lowtime;
+map<char,bool>visited;
+void addedge(char u,char v){
+graph[u].push_back(v);
+graph[v].push_back(u);
+
+}
+void bridge(char node,char par, int timer=0){
+intime[node]=timer;
+lowtime[node]=timer++;
+visited[node]=true;
+list<char>::iterator i;
+for(i=graph[node].begin();i!=graph[node].end();i++){
+if(*i==par){
+        continue;
+}
+if(visited[*i]){
+        lowtime[node]=min(lowtime[node],intime[*i]);
+}
+else{
+bridge(*i,node,timer);
+if(lowtime[*i]>intime[node]){
+        cout<<node<<"-"<<*i<<"  is a bridge"<<endl;
+}
+lowtime[node]=min(lowtime[node],lowtime[*i]);
+}
+}
+
+
+
+}
+
+
+int main() {
+ addedge('A','B');
+addedge('C','B');
+ addedge('A','C');
+ addedge('A','D');
+ addedge('D','E');
+ 
+map<char,list<char>>::iterator i;
+for(i=graph.begin();i!=graph.end();i++){
+        intime[i->first]=0;
+         lowtime[i->first]=0;
+       visited[i->first]=false;
+}
+
+bridge('A',' ');
+
+
+}
+
